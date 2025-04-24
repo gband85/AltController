@@ -99,21 +99,21 @@ namespace AltController.Sys
                 switch (eButton)
                 {
                     case EMouseButton.Left:
-                        inputs[0].mi.dwFlags = buttonDown ? WindowsAPI.MOUSEEVENTF_LEFTDOWN : WindowsAPI.MOUSEEVENTF_LEFTUP;
+                        inputs[0].ci.mi.dwFlags = buttonDown ? WindowsAPI.MOUSEEVENTF_LEFTDOWN : WindowsAPI.MOUSEEVENTF_LEFTUP;
                         break;
                     case EMouseButton.Middle:
-                        inputs[0].mi.dwFlags = buttonDown ? WindowsAPI.MOUSEEVENTF_MIDDLEDOWN : WindowsAPI.MOUSEEVENTF_MIDDLEUP;
+                        inputs[0].ci.mi.dwFlags = buttonDown ? WindowsAPI.MOUSEEVENTF_MIDDLEDOWN : WindowsAPI.MOUSEEVENTF_MIDDLEUP;
                         break;
                     case EMouseButton.Right:
-                        inputs[0].mi.dwFlags = buttonDown ? WindowsAPI.MOUSEEVENTF_RIGHTDOWN : WindowsAPI.MOUSEEVENTF_RIGHTUP;
+                        inputs[0].ci.mi.dwFlags = buttonDown ? WindowsAPI.MOUSEEVENTF_RIGHTDOWN : WindowsAPI.MOUSEEVENTF_RIGHTUP;
                         break;
                     case EMouseButton.X1:
-                        inputs[0].mi.dwFlags = buttonDown ? WindowsAPI.MOUSEEVENTF_XDOWN : WindowsAPI.MOUSEEVENTF_XUP;
-                        inputs[0].mi.mouseData = WindowsAPI.XBUTTON1;
+                        inputs[0].ci.mi.dwFlags = buttonDown ? WindowsAPI.MOUSEEVENTF_XDOWN : WindowsAPI.MOUSEEVENTF_XUP;
+                        inputs[0].ci.mi.mouseData = WindowsAPI.XBUTTON1;
                         break;
                     case EMouseButton.X2:
-                        inputs[0].mi.dwFlags = buttonDown ? WindowsAPI.MOUSEEVENTF_XDOWN : WindowsAPI.MOUSEEVENTF_XUP;
-                        inputs[0].mi.mouseData = WindowsAPI.XBUTTON2;
+                        inputs[0].ci.mi.dwFlags = buttonDown ? WindowsAPI.MOUSEEVENTF_XDOWN : WindowsAPI.MOUSEEVENTF_XUP;
+                        inputs[0].ci.mi.mouseData = WindowsAPI.XBUTTON2;
                         break;
                 }
                 WindowsAPI.SendInput(1, inputs, System.Runtime.InteropServices.Marshal.SizeOf(inputs[0]));
@@ -138,8 +138,8 @@ namespace AltController.Sys
         {
             INPUT[] inputs = new INPUT[1];
             inputs[0].type = WindowsAPI.INPUT_MOUSE;
-            inputs[0].mi.dwFlags = WindowsAPI.MOUSEEVENTF_WHEEL;
-            inputs[0].mi.mouseData = (uint)(isUp ? 120 : -120);
+            inputs[0].ci.mi.dwFlags = WindowsAPI.MOUSEEVENTF_WHEEL;
+            inputs[0].ci.mi.mouseData = (uint)(isUp ? 120 : -120);
             WindowsAPI.SendInput(1, inputs, System.Runtime.InteropServices.Marshal.SizeOf(inputs[0]));
 
             // Report mouse button event if required
@@ -162,13 +162,13 @@ namespace AltController.Sys
         {
             INPUT[] inputs = new INPUT[1];
             inputs[0].type = WindowsAPI.INPUT_MOUSE;
-            inputs[0].mi.dwFlags = WindowsAPI.MOUSEEVENTF_MOVE;
+            inputs[0].ci.mi.dwFlags = WindowsAPI.MOUSEEVENTF_MOVE;
             if (absolute)
             {
-                inputs[0].mi.dwFlags |= WindowsAPI.MOUSEEVENTF_ABSOLUTE;
+                inputs[0].ci.mi.dwFlags |= WindowsAPI.MOUSEEVENTF_ABSOLUTE;
             }
-            inputs[0].mi.dx = x;            
-            inputs[0].mi.dy = y;
+            inputs[0].ci.mi.dx = x;
+            inputs[0].ci.mi.dy = y;
             WindowsAPI.SendInput(1, inputs, System.Runtime.InteropServices.Marshal.SizeOf(inputs[0]));
         }
 

@@ -47,13 +47,13 @@ namespace AltController.Sys
         public const uint MOD_CONTROL = 0x0002;
         public const uint MOD_SHIFT = 0x0004;
         public const uint MOD_WIN = 0x0008;
-        
+
         [DllImport("user32.dll")]
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
         [DllImport("user32.dll")]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-        
+
         [DllImport("user32.dll")]
         public static extern uint MapVirtualKey(uint uCode, uint uMapType);
 
@@ -70,7 +70,7 @@ namespace AltController.Sys
         public static extern int ToUnicode(uint virtualKey,
                                             uint scanCode,
                                             byte[] keyStates,
-                                            [MarshalAs(UnmanagedType.LPArray)] [Out] char[] chars,
+                                            [MarshalAs(UnmanagedType.LPArray)][Out] char[] chars,
                                             int charMaxCount,
                                             uint flags);
 
@@ -347,7 +347,7 @@ namespace AltController.Sys
 
         [DllImport("user32.dll")]
         public static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
-        
+
         public const int INPUT_MOUSE = 0;
         public const int INPUT_KEYBOARD = 1;
         public const int INPUT_HARDWARE = 2;
@@ -467,17 +467,26 @@ namespace AltController.Sys
         ushort wParamH;
     }
 
+    //fix bug causing inputs to not be detected in 64bit mode 
+    //https://stackoverflow.com/questions/6830651/sendinput-and-64bits
     [StructLayout(LayoutKind.Explicit)]
-    public struct INPUT
+    public struct CONTROLINPUT
     {
         [FieldOffset(0)]
         public int type;
-        [FieldOffset(4)]
+        [FieldOffset(0)]
         public MOUSEINPUT mi;
-        [FieldOffset(4)]
+        [FieldOffset(0)]
         public KEYBDINPUT ki;
-        [FieldOffset(4)]
+        [FieldOffset(0)]
         public HARDWAREINPUT hi;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct INPUT
+    {
+        public uint type;
+        public CONTROLINPUT ci;
     }
 
     [StructLayout(LayoutKind.Sequential)]
